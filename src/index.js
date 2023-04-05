@@ -43,14 +43,21 @@ const getCaption = () => {
     return categories[idx].captions[numberImage + 1] || '';
 };
 
-const updatePage = () => {
+const loadImage = () => {
     img.src = getImageUrl();
-    textbox.innerHTML = getTitle();
-    caption.innerHTML = getCaption();
+    textbox.innerHTML = `Loading...`;
+    caption.innerHTML = `${index + 1} out of ${categories.length * 10}`;
 }
 
-// Run once on start
-updatePage();
+const updatePage = () => {
+    img.src = getImageUrl();
+};
+
+// Update text when image loads
+img.onload = () => {
+    textbox.innerHTML = getTitle();
+    caption.innerHTML = getCaption();
+};
 
 document.addEventListener('keydown', (e) => {
     console.log(index);
@@ -60,6 +67,7 @@ document.addEventListener('keydown', (e) => {
     else {
         index = e.key === 'ArrowLeft' ? Math.max(index - 1, 0) : Math.min(index + 1, categories.length * 10 - 1);
     }
-    updatePage();
+    loadImage();
 });
 
+loadImage();
